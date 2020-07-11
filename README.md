@@ -1,1 +1,1 @@
-# MIT_SDS_Notes
+# MITx Statistics & Data Science Notes
