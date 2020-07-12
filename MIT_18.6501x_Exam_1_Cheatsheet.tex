@@ -119,7 +119,6 @@ In this case $g: \mathbb{R}^k \to \mathbb{R}.$ Then,
 
 $$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, \nabla g(\mu)^T \Sigma \nabla g(\mu))$$
 
-
 \subsection{Chapter 6 Statistical Inference}
 \textit{"\dots is the process of using data to infer the distribution that generated that data."}\\
 
@@ -147,10 +146,56 @@ $$\widehat{\theta} - q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}} \leq \theta \
 $$(\theta - \widehat{\theta})^2 \leq q^2_{\alpha/2} \frac{\sigma^2}{n}$$
 Finding the roots of the quadratic equation will lead us to $I_{solve} = (\theta_1, \theta_2)$.
 
-\subsection{Hypothesis Testing and p--value}
+\subsection{Chapter 10 Hypothesis Testing}
+Let $X$ be a r.v. and let $\chi$ be the range of $X$. We test a hypothesis by finding an appropriate subset of outcomes $R \subset \chi$ called \underline{rejection region}. 
+If $X \in R$ we \underline{reject the null hypothesis}, otherwise, we do not reject it. 
+The null hypothesis is called $H_0: \theta \in \Theta_0$ and the alternative hypothesis is called $H_1: \theta \in \Theta_1$ and we retain $H_0$ unless there is strong evidence to reject it. 
+$\Theta_0 \ and \ \Theta_1$ are disjoint subsets of the sample space. We can make 2 errors when testing a hypothesis:\\
+
+\textbf{Type 1 error:} Rejecting $H_0$ when $H_0$ is true.\\
+\textbf{Type 2 error:} Retaining $H_0$ when $H_1$ is true.\\
+
+The \textbf{power function} of a test is defined as $\beta(\theta) = \mathbb{P}_\theta (X \in R)$, and the \textbf{size} of a test is defined to be 
+$\alpha = \underset{\theta \in \Theta_0}{max} \beta(\theta)$. The test is then said to have level $\alpha$.
+
+
+\subsubsection{p--values}
+Generally, if the test rejects at level $\alpha$ it will also reject at level $\alpha^{'} > \alpha$. Hence, the p--value is the smallest level $\alpha$ at which we can \underline{reject} $H_0$.
+Therefore, the smaller the p--value, the stronger the evidence against $H_0$.
+\textbf{Example:} We toss a coin 30 times and get 13 heads. We want to test $H_0: \theta = 1/2$ vs. $H_1: \theta \not = 1/2$. By CTL:
+
+$$\sqrt{n} \frac{\overline{X_n} - \theta_{H_0}}{\sigma_{H_0}} \approx 0.77$$
+Then the p--value is $\mathbb{P}_\theta (|Z| > 0.77) = 2 \mathbb{P}_\theta(Z < - 0.77) \approx 0.44$
+
+\section{Unit 3 Mehods of Estimation}
+
+\subsection{Distance TV and KL divergence}
+
+The \textbf{total variation} distance between two probabilities is defined as 
+$$TV(\mathbb{P}_\theta, \mathbb{P}_{\theta'}) = 1/2 \underset{x \in E}{\sum} |p_\theta (x) - p_{\theta'}(x)|$$
+
+We replace the $\sum$ for an integral in the case of continuous r.v's. The goal is to create an estimator that minimizes this distance, however it's unclear
+how to proceed.\\
+
+\textbf{Kullback-Leibler} Also known as the \underline{relative entropy}, mesure the divergence between two probabilities.
+$$KL(\mathbb{P}_\theta, \mathbb{P}_{\theta'}) = \underset{x \in E}{\sum} p_\theta(x) log \left(\frac{p_\theta (x)}{p_{\theta^{'}}(x)} \right)$$
+Estimating the KL divergence yield the \underline{maximum likelihood principal} presented bellow.
+
+\subsubsection{Maximum Likelihood Estimator}
+The likelihood function is defined as follow $$\mathcal{L}_n(\theta) = \prod_{i=1}^{n} f(X_i; \theta)$$
+and the log-likelihood is defined as $l_n(\theta) = log(\mathcal{L}_n(\theta))$. The \textbf{maximum likelihood estimator} is denoted by $\widehat{\theta}_n$
+that maximizes $\mathcal{L}_n(\theta)$. Here's a table  of likelihood function for popular distributions.\\
+
+\begin{tabular}{l c}
+    \textit{Distribution} &\textit{Likelihood Function}\\
+    Bernoulli & $p^{\sum x_i} (1-p)^{n- \sum x_i}$\\
+    Poisson & $(\lambda^{\sum x_i} e^{-n\lambda})/ \prod x_i$\\
+    Gaussian & $(1/2 \pi \sigma^2)^{n/2} e^{-(\sum(x_i - \mu)^2)/(2\sigma^2))}$\\
+    Exponential & $\lambda^n e^{-\lambda \sum x_i}$\\
+    Uni[0, b] & $(1/b^n) \mathbb{1}(max(x_i) \leq b)$
+\end{tabular}
 
 
 \end{multicols}
-
 \end{document}
 
