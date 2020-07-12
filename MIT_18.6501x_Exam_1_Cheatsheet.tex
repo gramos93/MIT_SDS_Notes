@@ -1,0 +1,156 @@
+\documentclass[9pt,landscape]{article}
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{multicol,multirow}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+	}
+\pagestyle{empty}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+% -----------------------------------------------------------------------
+
+\title{MIT 18.650x Mid-Term 1 Cheatsheet}
+
+\begin{document}
+
+\raggedright
+\footnotesize
+
+\begin{center}
+     \Large{\textbf{MIT 18.650x Mid-Term 1 Cheatsheet}} \\
+\end{center}
+\begin{multicols}{3}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{1pt}
+
+\section{Unit 2 - Parametric Estimation and Confidence Intervals}
+In this unit, we introduce a mathematical formalization of statistical modeling to make a principled sense of the \underline{Trinity of Statistical} inference.
+
+\begin{enumerate}
+    \item {Estimation: $\hat{p} = \overline{R_n}$ is an estimator for the real parameter $p^*$.}
+    \item {Confidence intervals: $[0.56, 0.73]$ is a 95\% confidence interval for $p$.}
+    \item {Hypothesis testing: "We found \textit{statistical evidence} that more couples turn their head to the right."}
+\end{enumerate}
+
+\subsection{Chapter 4 - Inequalities}
+Inequalities are used to bound quantities that might otherwise be hard to compute. \\
+
+\textbf{Markov's inequality:} let $X$ be a non-negative r.v. and suppose $\mathbb{E}(X)$ exists. For any $t > 0$,
+$$\mathbb{P}(X > t) = \frac{\mathbb{E}[X]}{t}$$
+
+\textbf{Chebyshev's inequality:} let $\mu = \mathbb{E}[X]$ and $\sigma^2 = Var(X)$. Then, $$\mathbb{P}(|X - \mu| \ge t) \leq \frac{\sigma^2}{t^2}$$
+
+\textbf{Hoeffding's inequality:} let $X_1, \dots, X_n \sim{} Ber(p)$ then for any $\epsilon > 0$, $$\mathbb{P}(|\overline{X_n} - p| > \epsilon) \leq 2e^{\frac{-2n\epsilon^2}{(b-a)^2}}$$
+Where $\overline{X_n}$ is the sample average and $X \in [a, b]$.\\
+
+\textbf{Jensen's inequality:} If $g$ is convex, then $$\mathbb{E}[g(X)] \ge g(\mathbb{E}[X])$$
+The reverse is true if $g$ is concave.
+
+\subsection{Chapter 5 - Convergence of r.v.'s}
+There are 2 main ideas in this chapter. First, the \textbf{LLN} says that the \textit{sample average} converges in probability to $\mathbb{E}$. Second, the \textbf{CTL} says that
+$\sqrt{n}(\overline{X_n} - \mu)$ converges in distribution to a Normal distribution for large enough $n$.\\
+Let $X_1, \dots, X_n$ be a sequence of r.v's, $X$ is another r.v. Let $F_n(t)$ denote the CDF of $X_n$ an $F(t)$ denote the CDF of $X$.\\
+
+\textbf{Convergence in probability:} $X_n \overset{P}{\to} X$ if, for every $\epsilon > 0$, $$\mathbb{P}(|X_n - X| > \epsilon) \to 0$$ as $n \to \infty$. 
+\textbf{Warning !} One might think that $X_n \overset{P}{\to} b$ implies $\mathbb{E}[X] \to b$. This is \textbf{not} true. 
+
+\textbf{Convergence in distribution:} $X_n \overset{d}{\to} X$ if, $$\lim_{n \to \infty} F_n(t) = F(t)$$ for all $t$ for which $F$ is continuous. 
+
+\subsubsection{Properties of convergence}
+The following relationships hold:
+\begin{enumerate}[itemsep=0em]
+    \item{$X_n \overset{P}{\to} X$ implies that $X_n \overset{d}{\to} X$.}
+    \item{If $X_n \overset{d}{\to} X$ and if $\mathbb{P}(X=c) = 1$ for some real number $c$, then $X_n \overset{P}{\to} X$.}
+    \item{If $X_n \overset{P}{\to} X$ and $Y_n \overset{P}{\to} Y$ then, $X_n + Y_n \overset{P}{\to} X+Y$.}
+    \item{If $X_n \overset{d}{\to} X$ and $Y_n \overset{d}{\to} c$ then, $X_n + Y_n \overset{c}{\to} X + c$.}
+    \item{If $X_n \overset{P}{\to} X$ and $Y_n \overset{P}{\to} Y$ then, $X_n Y_n \overset{P}{\to} XY$.}
+    \item{If $X_n \overset{d}{\to} X$ and $Y_n \overset{d}{\to} c$ then, $X_n Y_n \overset{d}{\to} cX$.}
+    \item{If $X_n \overset{P}{\to} X$ then, $g(X_n) \overset{P}{\to} g(X)$.}
+    \item{If $X_n \overset{d}{\to} X$ then, $g(X_n) \overset{d}{\to} g(X)$.}
+\end{enumerate}
+
+Parts (4) and (6) are known as the \textbf{Slutzky's theorem}. Note that $X_n \overset{d}{\to} X$ and $Y_n \overset{d}{\to} Y$ does not imply that $X_n = Y_n \overset{d}{\to} X+Y$.
+
+\subsubsection{Weak LLN \& CTL}
+\textbf{Interpretation of the WLLN:}The distribution of $\overline{X_n}$ becomes more concentrated around $\mu$ as $n$ get larger. From the Chebyshev's inequality: 
+$\mathbb{P}(|\overline{X_n} - \mu| > \epsilon) \leq \frac{Var(\overline{X_n})}{\epsilon^2} = \frac{\sigma^2}{n \epsilon^2}.$
+
+\textbf{Central Limit Theorem:}let $X_1, \dots, X_n$ be i.i.d with mean $\mu$ and variance $\sigma^2$. Then 
+$$Z_n \equiv \frac{\overline{X_n} - \mu}{\sqrt{Var(\overline{X_n})}} = \frac{\sqrt{n} (\overline{X_n} - \mu)}{\sigma} \overset{(d)}{\to} Z$$
+where $Z$ is a standard Normal.\\
+\textbf{Multivariate} version of the CTL. Let $X_1, \dots, X_n$ be i.i.d random \textit{vectors}, $X_i = [X_{1}, X_{2}, \dots, X_{k}]^T$ with mean $\mu = [\mu_{1}, \mu_{2}, \dots, \mu_{k}]^T$
+and variance matrix $\Sigma$. Then,$$\sqrt{n}(\overline{X} - \mu) \overset{(d)}{\to} N(0, \Sigma)$$
+
+\subsubsection{The Delta Method}
+The Delta Method allows us to find the limiting distribution of $g(Y_n)$ where $g$ is a \underline{smooth} function.
+Suppose that $\frac{\sqrt{n}(Y_n - \mu)}{\sigma} \overset{(d)}{\to} N(0, 1)$ and $g$ is a \underline{differentiable} function such that $g'(\mu) \ne 0$. Then,
+
+$$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, g'(\mu)|^2 \sigma^2)$$
+
+\textbf{Multivariate} version of the Delta method. Let $Y_n = (Y_{n1}, \dots, Y_{nk})$ be a sequence random \textit{vectors} such that $\sqrt{n}(Y_n - \mu) \overset{(d)}{\to} N(0, \Sigma)$.
+In this case $g: \mathbb{R}^k \to \mathbb{R}.$ Then,
+
+$$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, \nabla g(\mu)^T \Sigma \nabla g(\mu))$$
+
+
+\subsection{Chapter 6 Statistical Inference}
+\textit{"\dots is the process of using data to infer the distribution that generated that data."}\\
+
+\subsubsection{Point estimation: } 
+
+Provides a \textit{best guess} of some quantity of interest. The point estimate of $\theta$, a fixed number, is $\hat{\theta}$, which depends on the data, therefore a r.v. A point estimator $\hat{\theta}_n$ of the parameter $\theta$ is \textbf{consistent} if $\hat{\theta}_n \overset{P}{\to} \theta$.
+The \textbf{bias} of an estimator is defined as $bias(\hat{\theta}_n) = \mathbb{E_{\theta}}[\hat{\theta}_n] - \theta$. An estimator is unbiased if $\mathbb{E_{\theta}}[\hat{\theta}_n] = 0$.
+Following the bias, the \textbf{mean squared error} (MSE) is $MSE = bias^2(\hat{\theta}_n) + \mathbb{V_{\theta}}(\hat{\theta}_n)$.\\
+
+\subsubsection{Confidence Intervals: } 
+Is an interval $I = (a, b)$ such that $\mathbb{P}_{\theta}(\theta \in I) \ge 1-\alpha$, for all $\theta \in \Theta$. 
+$I$ is random, but $\theta$ is not random. Suppose that $\widehat{\theta}_n \approx N(\theta, \sigma^2)$. The confidence interval will be of the form 
+$$I = \left [\widehat{\theta}_n - q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}}, \widehat{\theta}_n + q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}} \right ]$$
+
+However, most of the time, this confidence interval will depend on the true parameter $\theta$. There are 3 methods to fix this problem.\\
+
+\textbf{Conservative Bound:} Suppose we're calculating a confidence interval for the parameter $p$ of a Bernoulli r.v. where $\sigma = \sqrt{p(1-p)}$. 
+In this case $p(1-p)$ has the \textit{upper bound} $1/4$. We can replace this value in $I$. 
+Then $I = [\widehat{p} - q_{\alpha/2} \frac{1}{2\sqrt{n}}, \widehat{p} + q_{\alpha/2} \frac{1}{2\sqrt{n}}]$.\\
+
+\textbf{Plug-in:} Since $\widehat{\theta}$ is a consistent estimator of $\theta$, we can simply replace $\theta$ with $\widehat{\theta}$.
+
+\textbf{Solve the equation:} A more elaborate method is to solve the system of two Inequalities w.r.t $\theta$. 
+$$\widehat{\theta} - q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}} \leq \theta \leq \widehat{\theta} + q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}}$$
+$$(\theta - \widehat{\theta})^2 \leq q^2_{\alpha/2} \frac{\sigma^2}{n}$$
+Finding the roots of the quadratic equation will lead us to $I_{solve} = (\theta_1, \theta_2)$.
+
+\subsection{Hypothesis Testing and p--value}
+
+
+\end{multicols}
+
+\end{document}
+
