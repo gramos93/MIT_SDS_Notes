@@ -42,7 +42,7 @@
 \footnotesize
 
 \begin{center}
-     \Large{\textbf{MIT 18.650x Mid-Term 1 Cheatsheet}} \\
+    \textbf{MIT 18.650x Mid-Term 1 Cheatsheet}\\
 \end{center}
 \begin{multicols}{3}
 \setlength{\premulticols}{1pt}
@@ -106,7 +106,7 @@ $\mathbb{P}(|\overline{X_n} - \mu| > \epsilon) \leq \frac{Var(\overline{X_n})}{\
 $$Z_n \equiv \frac{\overline{X_n} - \mu}{\sqrt{Var(\overline{X_n})}} = \frac{\sqrt{n} (\overline{X_n} - \mu)}{\sigma} \overset{(d)}{\to} Z$$
 where $Z$ is a standard Normal.\\
 \textbf{Multivariate} version of the CTL. Let $X_1, \dots, X_n$ be i.i.d random \textit{vectors}, $X_i = [X_{1}, X_{2}, \dots, X_{k}]^T$ with mean $\mu = [\mu_{1}, \mu_{2}, \dots, \mu_{k}]^T$
-and variance matrix $\Sigma$. Then,$$\sqrt{n}(\overline{X} - \mu) \overset{(d)}{\to} N(0, \Sigma)$$
+and covariance matrix $\Sigma$. Then,$$\sqrt{n}(\overline{X} - \mu) \overset{(d)}{\to} N(0, \Sigma)$$
 
 \subsubsection{The Delta Method}
 The Delta Method allows us to find the limiting distribution of $g(Y_n)$ where $g$ is a \underline{smooth} function.
@@ -124,7 +124,8 @@ $$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, \nabla g(\mu)^T \Sigma \nabl
 
 \subsubsection{Point estimation: } 
 
-Provides a \textit{best guess} of some quantity of interest. The point estimate of $\theta$, a fixed number, is $\hat{\theta}$, which depends on the data, therefore a r.v. A point estimator $\hat{\theta}_n$ of the parameter $\theta$ is \textbf{consistent} if $\hat{\theta}_n \overset{P}{\to} \theta$.
+Provides a \textit{best guess} of some quantity of interest. The point estimate of $\theta$, a fixed number, is $\hat{\theta}$, 
+which depends on the data, therefore a r.v. A point estimator $\hat{\theta}_n$ of the parameter $\theta$ is \textbf{consistent} if $\hat{\theta}_n \overset{P}{\to} \theta$.
 The \textbf{bias} of an estimator is defined as $bias(\hat{\theta}_n) = \mathbb{E_{\theta}}[\hat{\theta}_n] - \theta$. An estimator is unbiased if $\mathbb{E_{\theta}}[\hat{\theta}_n] = 0$.
 Following the bias, the \textbf{mean squared error} (MSE) is $MSE = bias^2(\hat{\theta}_n) + \mathbb{V_{\theta}}(\hat{\theta}_n)$.\\
 
@@ -160,7 +161,8 @@ $\alpha = \underset{\theta \in \Theta_0}{max} \beta(\theta)$. The test is then s
 
 
 \subsubsection{p--values}
-Generally, if the test rejects at level $\alpha$ it will also reject at level $\alpha^{'} > \alpha$. Hence, the p--value is the smallest level $\alpha$ at which we can \underline{reject} $H_0$.
+Generally, if the test rejects at level $\alpha$ it will also reject at level $\alpha^{'} > \alpha$. 
+Hence, the p--value is the smallest level $\alpha$ at which we can \underline{reject} $H_0$.
 Therefore, the smaller the p--value, the stronger the evidence against $H_0$.
 \textbf{Example:} We toss a coin 30 times and get 13 heads. We want to test $H_0: \theta = 1/2$ vs. $H_1: \theta \not = 1/2$. By CTL:
 
@@ -181,10 +183,20 @@ how to proceed.\\
 $$KL(\mathbb{P}_\theta, \mathbb{P}_{\theta'}) = \underset{x \in E}{\sum} p_\theta(x) log \left(\frac{p_\theta (x)}{p_{\theta^{'}}(x)} \right)$$
 Estimating the KL divergence yield the \underline{maximum likelihood principal} presented bellow.
 
+\subsection{Chapter 9 Parametric Inference}
 \subsubsection{Maximum Likelihood Estimator}
-The likelihood function is defined as follow $$\mathcal{L}_n(\theta) = \prod_{i=1}^{n} f(X_i; \theta)$$
-and the log-likelihood is defined as $l_n(\theta) = log(\mathcal{L}_n(\theta))$. The \textbf{maximum likelihood estimator} is denoted by $\widehat{\theta}_n$
-that maximizes $\mathcal{L}_n(\theta)$. Here's a table  of likelihood function for popular distributions.\\
+The likelihood function is defined as $$\mathcal{L}_n(\theta) = \prod_{i=1}^{n} f(X_i; \theta)$$
+and the log-likelihood is defined as $l_n(\theta) = log(\mathcal{L}_n(\theta))$.\\
+The \textbf{maximum likelihood estimator} is denoted by $\widehat{\theta}_n$
+that maximizes $\mathcal{L}_n(\theta)$. Usually we follow theses steps to calculate the MLE of a parameter:
+\begin{enumerate}
+    \item Calculate $\mathcal{L}_n(\theta)$
+    \item Calculate the log-likelihood, $l_n(\theta)$
+    \item Derivate w.r.t the parameter, $\theta$, and set the derivative to 0
+    \item Solve for $\theta$.
+\end{enumerate}
+
+Here's a table  of likelihood function for popular distributions.\\
 
 \begin{tabular}{l c}
     \textit{Distribution} &\textit{Likelihood Function}\\
@@ -194,6 +206,79 @@ that maximizes $\mathcal{L}_n(\theta)$. Here's a table  of likelihood function f
     Exponential & $\lambda^n e^{-\lambda \sum x_i}$\\
     Uni[0, b] & $(1/b^n) \mathbb{1}(max(x_i) \leq b)$
 \end{tabular}
+\newline
+
+\textbf{Asymptotic Normality of the MLE:} 
+\begin{itemize}
+    \item The parameter is identifiable
+    \item $\forall \theta \in \Theta$, the support of $\mathbb{P}_\theta$ does not depend on $\theta$
+    \item $\theta_\star$ is not on the boundary of $\Theta$, otherwise $l(\theta)$ may not be differentiable
+    \item $I(\theta)$ is invertible in the neighborhood of $\theta_\star$
+    \item A few other technical conditions
+\end{itemize}
+
+Then, $\widehat{\theta}^{MLE}_{n} \overset{P}{\underset{n \to \infty}{\to}} \theta^* \ w.r.t. \ \mathbb{P}_\theta^{*}$ and  
+$\sqrt{n}(\widehat{\theta}^{MLE}_n - \theta^*) \overset{d}{\underset{n\to \infty}{\to}} N(0, I(\theta^*)^{-1})$, 
+where $I(\theta^*)$ is the \underline{Fisher Information}, defined as $I(\theta) = -\mathbb{E}_\theta[\mathbb{H}l(\theta)] = -\mathbb{E}_\theta[l"(\theta)]$.
+
+\subsubsection{Method of Moments}
+Let $X_1, \dots, X_n$ be an i.i.d sample associated with $(E, (\mathbb{P}_\theta)_{\theta \in \Theta})$.\\
+$\longrightarrow$ Population moments: $m_k(\theta) = \mathbb{E}_\theta [X_1^k]$\\
+$\longrightarrow$ Empirical moments: $ \widehat{m}_k (\theta) = \overline{X}_n^k$\\
+
+\textbf{Example:} We have a normal distribution model, $N(\mu, \sigma^2)$. Given data, the method of moments will estimate the parameters as:
+$$\widehat{m}_1 = \widehat{\mu} = \overline{X}_n$$
+$$\widehat{m}_2 = \widehat{\mu^2} + \widehat{\sigma^2} = \overline{X^2_n}$$
+
+All that is left is to solve the equations system.
+
+\subsubsection{M-Estimators}
+
+Goal: estimate the parameter $\mu^*$ associated with some unknown distribution $\mathbb{P}$, e.g.: it's mean, median, variance, etc. 
+Find some function $\rho: E \times M \to \mathbb{R}$, where $M$ is the set of all possible values of $\mu^*$ such that:
+$$\mathcal{Q}(\mu) := \mathbb{E} [\rho(X_1, \mu)]$$
+achives its minimum at $\mu = \mu^*$.\\
+\textbf{Examples:}\\ If $E = M = \mathbb{R} \text{ and } \rho(x, \mu) = (x - \mu)^2; \forall (x, \mu) \in \mathbb{R}; \mu^* = \mathbb{E}[X]$\\
+If $E = M = \mathbb{R} \text{ and } \rho(x, \mu) = |x - \mu|; \forall (x, \mu) \in \mathbb{R}; \mu^*$ is the \underline{median} of $\mathbb{P}$\\
+
+\textit{The empirical median is always more robust than the mean, meaning that it's less affected by missing or wrong data.}
+
+\subsubsection{All the matrices/vectors}
+
+\textbf{Covariance Matrix($\Sigma$):} formed by the $var(X_i)$ in the diagonals and $Cov(X_i, X_j)$ for the other terms.
+
+$$\Sigma = 
+\left[
+\begin{array}{ccc}
+    var(X_1) & \ldots & cov(X_1, X_d)\\
+    \vdots & \vdots & \vdots\\
+    cov(X_d, X_1) & \ldots & var(X_d)
+\end{array}
+\right]$$
+
+\textbf{Gradient($\nabla$):} first derivative matrix of a function matrix $g(\theta)$
+
+$$\nabla g(\theta) = 
+\left[
+\begin{array}{ccc}
+    \frac{\partial g_1(\theta)}{\partial \theta_1}& &\frac{\partial g_k(\theta)}{\partial \theta_1}\\
+    \vdots& \vdots & \vdots\\
+    \frac{\partial g_1(\theta)}{\partial \theta_d}& &\frac{\partial g_k(\theta)}{\partial \theta_d}\\
+\end{array}
+\right]
+$$
+
+\textbf{Hessian($\mathbb{H}$):} secong derivative matrix of a function matrix $g(\theta)$
+
+$$\mathbb{H} g(\theta) = 
+\left[
+\begin{array}{ccc}
+    \frac{\partial^2 g_1(\theta)}{\partial \theta_1^2}& &\frac{\partial^2 g_k(\theta)}{\partial \theta_1^2}\\
+    \vdots& \vdots & \vdots\\
+    \frac{\partial^2 g_1(\theta)}{\partial \theta_d^2}& &\frac{\partial^2 g_k(\theta)}{\partial \theta_d^2}\\
+\end{array}
+\right]
+$$
 
 
 \end{multicols}
