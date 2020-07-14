@@ -6,7 +6,7 @@
 \usepackage[landscape]{geometry}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
 \usepackage{enumitem}
-
+\usepackage{bbm}
 
 \ifthenelse{\lengthtest { \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
@@ -204,7 +204,7 @@ Here's a table  of likelihood function for popular distributions.\\
     Poisson & $(\lambda^{\sum x_i} e^{-n\lambda})/ \prod x_i$\\
     Gaussian & $(1/2 \pi \sigma^2)^{n/2} e^{-(\sum(x_i - \mu)^2)/(2\sigma^2))}$\\
     Exponential & $\lambda^n e^{-\lambda \sum x_i}$\\
-    Uni[0, b] & $(1/b^n) \mathbb{1}(max(x_i) \leq b)$
+    Uni[0, b] & $(1/b^n) \mathbbm{1}(max(x_i) \leq b)$
 \end{tabular}
 \newline
 
@@ -243,7 +243,7 @@ If $E = M = \mathbb{R} \text{ and } \rho(x, \mu) = |x - \mu|; \forall (x, \mu) \
 
 \textit{The empirical median is always more robust than the mean, meaning that it's less affected by missing or wrong data.}
 
-\subsubsection{All the matrices/vectors}
+\subsection{All the matrices/vectors}
 
 \textbf{Covariance Matrix($\Sigma$):} formed by the $var(X_i)$ in the diagonals and $Cov(X_i, X_j)$ for the other terms.
 
@@ -254,7 +254,8 @@ $$\Sigma =
     \vdots & \vdots & \vdots\\
     cov(X_d, X_1) & \ldots & var(X_d)
 \end{array}
-\right]$$
+\right]_{d \times d}
+$$
 
 \textbf{Gradient($\nabla$):} first derivative matrix of a function matrix $g(\theta)$
 
@@ -265,7 +266,7 @@ $$\nabla g(\theta) =
     \vdots& \vdots & \vdots\\
     \frac{\partial g_1(\theta)}{\partial \theta_d}& &\frac{\partial g_k(\theta)}{\partial \theta_d}\\
 \end{array}
-\right]
+\right]_{d \times k}
 $$
 
 \textbf{Hessian($\mathbb{H}$):} secong derivative matrix of a function matrix $g(\theta)$
@@ -273,13 +274,37 @@ $$
 $$\mathbb{H} g(\theta) = 
 \left[
 \begin{array}{ccc}
-    \frac{\partial^2 g_1(\theta)}{\partial \theta_1^2}& &\frac{\partial^2 g_k(\theta)}{\partial \theta_1^2}\\
+    \frac{\partial^2 g(\theta)}{\partial \theta_1^2}& &\frac{\partial^2 g(\theta)}{\partial \theta_d \theta_1}\\
     \vdots& \vdots & \vdots\\
-    \frac{\partial^2 g_1(\theta)}{\partial \theta_d^2}& &\frac{\partial^2 g_k(\theta)}{\partial \theta_d^2}\\
+    \frac{\partial^2 g(\theta)}{\partial \theta_1 \theta_d}& &\frac{\partial^2 g(\theta)}{\partial \theta_d^2}\\
 \end{array}
-\right]
+\right]_{d \times d}
 $$
+\textit{Note: the function $g(\theta)$ is said to be concave if $x^T \mathbb{H}g(\theta)x \leq 0, \forall x \in \mathbb{R}^d$.}
 
+
+\textbf{Fisher Information Matrix ($I(\theta)$):} is defined as $-\mathbb{E}_\theta [\mathbb{H}l(\theta)]$
+
+\subsection{Multivariate Distributions}
+\textbf{Normal}
+$$f(x; \mu, \Sigma) = \frac{1}{(2\pi)^{k/2}|\Sigma|^{1/2}} \text{exp}\left \{-\frac{1}{2} (x-\mu)^T \Sigma^{-1} (x-\mu)\right \}$$
+
+\subsection{Huber's Loss}
+
+The Huber's Loss function allow us to render absolute functions differentiable, for example $|x|$, which is not differentiable at 0.
+
+\begin{align*}
+h_\delta (a) &=
+    \begin{cases}
+        a^2/2,                       & |a| \leq \delta\\
+        \delta (|a| - \delta /2),    & \text{otherwise}
+    \end{cases}\\
+h^{'}_\delta (a) &=
+    \begin{cases}
+        2a,          & |a| \leq \delta\\
+        \pm \delta,  & \text{otherwise}
+    \end{cases}
+\end{align*}
 
 \end{multicols}
 \end{document}
