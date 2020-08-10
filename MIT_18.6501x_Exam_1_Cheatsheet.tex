@@ -34,7 +34,7 @@
 \setlength{\parskip}{0pt plus 0.5ex}
 % -----------------------------------------------------------------------
 
-\title{MIT 18.650x Mid-Term 1 Cheatsheet}
+\title{MIT 18.650x Cheatsheet}
 
 \begin{document}
 
@@ -96,7 +96,8 @@ The following relationships hold:
     \item{If $X_n \overset{d}{\to} X$ then, $g(X_n) \overset{d}{\to} g(X)$.}
 \end{enumerate}
 
-Parts (4) and (6) are known as the \textbf{Slutzky's theorem}. Note that $X_n \overset{d}{\to} X$ and $Y_n \overset{d}{\to} Y$ does not imply that $X_n = Y_n \overset{d}{\to} X+Y$.
+Parts (4) and (6) are known as the \textbf{Slutzky's theorem}. Note that $X_n \overset{d}{\to} X$ and $Y_n \overset{d}{\to} Y$ 
+does not imply that $X_n = Y_n \overset{d}{\to} X+Y$.
 
 \subsubsection{Weak LLN \& CTL}
 \textbf{Interpretation of the WLLN:}The distribution of $\overline{X_n}$ becomes more concentrated around $\mu$ as $n$ get larger. From the Chebyshev's inequality: 
@@ -105,7 +106,8 @@ $\mathbb{P}(|\overline{X_n} - \mu| > \epsilon) \leq \frac{Var(\overline{X_n})}{\
 \textbf{Central Limit Theorem:}let $X_1, \dots, X_n$ be i.i.d with mean $\mu$ and variance $\sigma^2$. Then 
 $$Z_n \equiv \frac{\overline{X_n} - \mu}{\sqrt{Var(\overline{X_n})}} = \frac{\sqrt{n} (\overline{X_n} - \mu)}{\sigma} \overset{(d)}{\to} Z$$
 where $Z$ is a standard Normal.\\
-\textbf{Multivariate} version of the CTL. Let $X_1, \dots, X_n$ be i.i.d random \textit{vectors}, $X_i = [X_{1}, X_{2}, \dots, X_{k}]^T$ with mean $\mu = [\mu_{1}, \mu_{2}, \dots, \mu_{k}]^T$
+\textbf{Multivariate} version of the CTL. Let $X_1, \dots, X_n$ be i.i.d random \textit{vectors}, $X_i = [X_{1}, X_{2}, \dots, X_{k}]^T$ 
+with mean $\mu = [\mu_{1}, \mu_{2}, \dots, \mu_{k}]^T$
 and covariance matrix $\Sigma$. Then,$$\sqrt{n}(\overline{X} - \mu) \overset{(d)}{\to} N(0, \Sigma)$$
 
 \subsubsection{The Delta Method}
@@ -114,7 +116,8 @@ Suppose that $\frac{\sqrt{n}(Y_n - \mu)}{\sigma} \overset{(d)}{\to} N(0, 1)$ and
 
 $$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, g'(\mu)|^2 \sigma^2)$$
 
-\textbf{Multivariate} version of the Delta method. Let $Y_n = (Y_{n1}, \dots, Y_{nk})$ be a sequence random \textit{vectors} such that $\sqrt{n}(Y_n - \mu) \overset{(d)}{\to} N(0, \Sigma)$.
+\textbf{Multivariate} version of the Delta method. Let $Y_n = (Y_{n1}, \dots, Y_{nk})$ be a sequence random \textit{vectors} 
+such that $\sqrt{n}(Y_n - \mu) \overset{(d)}{\to} N(0, \Sigma)$.
 In this case $g: \mathbb{R}^k \to \mathbb{R}.$ Then,
 
 $$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, \nabla g(\mu)^T \Sigma \nabla g(\mu))$$
@@ -126,7 +129,8 @@ $$\sqrt{n}(g(Y_n) - g(\mu)) \overset{(d)}{\to} N(0, \nabla g(\mu)^T \Sigma \nabl
 
 Provides a \textit{best guess} of some quantity of interest. The point estimate of $\theta$, a fixed number, is $\hat{\theta}$, 
 which depends on the data, therefore a r.v. A point estimator $\hat{\theta}_n$ of the parameter $\theta$ is \textbf{consistent} if $\hat{\theta}_n \overset{P}{\to} \theta$.
-The \textbf{bias} of an estimator is defined as $bias(\hat{\theta}_n) = \mathbb{E_{\theta}}[\hat{\theta}_n] - \theta$. An estimator is unbiased if $\mathbb{E_{\theta}}[\hat{\theta}_n] = 0$.
+The \textbf{bias} of an estimator is defined as $bias(\hat{\theta}_n) = \mathbb{E_{\theta}}[\hat{\theta}_n] - \theta$. 
+An estimator is unbiased if $\mathbb{E_{\theta}}[\hat{\theta}_n] = 0$.
 Following the bias, the \textbf{mean squared error} (MSE) is $MSE = bias^2(\hat{\theta}_n) + \mathbb{V_{\theta}}(\hat{\theta}_n)$.\\
 
 \subsubsection{Confidence Intervals: } 
@@ -146,28 +150,6 @@ Then $I = [\widehat{p} - q_{\alpha/2} \frac{1}{2\sqrt{n}}, \widehat{p} + q_{\alp
 $$\widehat{\theta} - q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}} \leq \theta \leq \widehat{\theta} + q_{\alpha/2} \frac{\sqrt{\sigma^2}}{\sqrt{n}}$$
 $$(\theta - \widehat{\theta})^2 \leq q^2_{\alpha/2} \frac{\sigma^2}{n}$$
 Finding the roots of the quadratic equation will lead us to $I_{solve} = (\theta_1, \theta_2)$.
-
-\subsection{Chapter 10 Hypothesis Testing}
-Let $X$ be a r.v. and let $\chi$ be the range of $X$. We test a hypothesis by finding an appropriate subset of outcomes $R \subset \chi$ called \underline{rejection region}. 
-If $X \in R$ we \underline{reject the null hypothesis}, otherwise, we do not reject it. 
-The null hypothesis is called $H_0: \theta \in \Theta_0$ and the alternative hypothesis is called $H_1: \theta \in \Theta_1$ and we retain $H_0$ unless there is strong evidence to reject it. 
-$\Theta_0 \ and \ \Theta_1$ are disjoint subsets of the sample space. We can make 2 errors when testing a hypothesis:\\
-
-\textbf{Type 1 error:} Rejecting $H_0$ when $H_0$ is true.\\
-\textbf{Type 2 error:} Retaining $H_0$ when $H_1$ is true.\\
-
-The \textbf{power function} of a test is defined as $\beta(\theta) = \mathbb{P}_\theta (X \in R)$, and the \textbf{size} of a test is defined to be 
-$\alpha = \underset{\theta \in \Theta_0}{max} \beta(\theta)$. The test is then said to have level $\alpha$.
-
-
-\subsubsection{p--values}
-Generally, if the test rejects at level $\alpha$ it will also reject at level $\alpha^{'} > \alpha$. 
-Hence, the p--value is the smallest level $\alpha$ at which we can \underline{reject} $H_0$.
-Therefore, the smaller the p--value, the stronger the evidence against $H_0$.
-\textbf{Example:} We toss a coin 30 times and get 13 heads. We want to test $H_0: \theta = 1/2$ vs. $H_1: \theta \not = 1/2$. By CTL:
-
-$$\sqrt{n} \frac{\overline{X_n} - \theta_{H_0}}{\sigma_{H_0}} \approx 0.77$$
-Then the p--value is $\mathbb{P}_\theta (|Z| > 0.77) = 2 \mathbb{P}_\theta(Z < - 0.77) \approx 0.44$
 
 \section{Unit 3 Mehods of Estimation}
 
@@ -204,7 +186,7 @@ Here's a table  of likelihood function for popular distributions.\\
     Poisson & $(\lambda^{\sum x_i} e^{-n\lambda})/ \prod x_i$\\
     Gaussian & $(1/2 \pi \sigma^2)^{n/2} e^{-(\sum(x_i - \mu)^2)/(2\sigma^2))}$\\
     Exponential & $\lambda^n e^{-\lambda \sum x_i}$\\
-    Uni[0, b] & $(1/b^n) \mathbbm{1}(max(x_i) \leq b)$
+    Uni[0, b] & $(1/b^n) \mathbbm{1}(max(x_i)) \leq b)$
 \end{tabular}
 \newline
 
@@ -278,7 +260,7 @@ $$\mathbb{H} g(\theta) =
     \vdots& \vdots & \vdots\\
     \frac{\partial^2 g(\theta)}{\partial \theta_1 \theta_d}& &\frac{\partial^2 g(\theta)}{\partial \theta_d^2}\\
 \end{array}
-\right]_{d \times d}
+\right]_{d \times d} 
 $$
 \textit{Note: the function $g(\theta)$ is said to be concave if $x^T \mathbb{H}g(\theta)x \leq 0, \forall x \in \mathbb{R}^d$.}
 
@@ -306,6 +288,71 @@ h^{'}_\delta (a) &=
     \end{cases}
 \end{align*}
 
+
+\section{Unit 4 Hypothesis Testing}
+\subsection{Chapter 10}
+
+Let $X$ be a r.v. and let $\chi$ be the range of $X$. We test a hypothesis by finding an appropriate subset of outcomes $R \subset \chi$ called \underline{rejection region}. 
+If $X \in R$ we \underline{reject the null hypothesis}, otherwise, we do not reject it. 
+The null hypothesis is called $H_0: \theta \in \Theta_0$ and the alternative hypothesis is called 
+$H_1: \theta \in \Theta_1$ and we retain $H_0$ unless there is strong evidence to reject it. 
+$\Theta_0 \ and \ \Theta_1$ are disjoint subsets of the sample space. We can make 2 errors when testing a hypothesis:\\
+
+\textbf{Type 1 error:} Rejecting $H_0$ when $H_0$ is true.\\
+\textbf{Type 2 error:} Retaining $H_0$ when $H_1$ is true.\\
+
+The \textbf{power function} of a test is defined as $\beta(\theta) = \mathbb{P}_\theta (X \in R)$, and the \textbf{size} of a test is defined to be 
+$\alpha = \underset{\theta \in \Theta_0}{max} \beta(\theta)$. The test is then said to have level $\alpha$.
+
+\subsubsection{Wald's Test}
+
+Consider testting $H_0: \theta = \theta_0 \text{ vs. } H_1: \theta \ne \theta_0$
+Assuming that $\widehat{\theta}$ is asymptotically Normal we have :
+
+$$W = \frac{(\widehat{\theta} - \theta_0)}{\widehat{se}}, \text{ where } \widehat{se} = \sqrt{\sigma^{2}_{0}/n}$$
+
+The size $\alpha$ Wald test will reject $H_0$ when $|W| > z_{\alpha/2}$.\\
+\textit{Note: in the case of a two samples test (e.g.: comparing two means), $\widehat{se} = \sqrt{(sigma^{2}_{1}/n) + (sigma^{2}_{2}/m)}$, where m and n are the sample sizes.}
+
+\subsubsection{p--values}
+
+Generally, if the test rejects at level $\alpha$ it will also reject at level $\alpha^{'} > \alpha$. 
+Hence, the p--value is the smallest level $\alpha$ at which we can \underline{reject} $H_0$.
+Therefore, the smaller the p--value, the stronger the evidence against $H_0$.
+\textbf{Example:} We toss a coin 30 times and get 13 heads. We want to test $H_0: \theta = 1/2$ vs. $H_1: \theta \not = 1/2$. By CTL:
+
+$$\sqrt{n} \frac{\overline{X_n} - \theta_{H_0}}{\sigma_{H_0}} \approx 0.77$$
+Then the p--value is $\mathbb{P}_\theta (|Z| > 0.77) = 2 \mathbb{P}_\theta(Z < - 0.77) \approx 0.44$
+
+\subsubsection{The \texorpdfstring{$\chi^2$}{TEXT} Distribution}
+
+The $\chi^2$ distribution is defined as $V = \sum_{i = 1}^{k} Z^{2}_{i}$, where the $Z_i$ are standard normal r.v.'s.
+We say that $V$ has $k$ degrees of freedom, which coincides with the $\mathbb{E}[V]$, while the $var(V) = k^2$. The PDF of V is:
+
+$$f(v) = \frac{v^{k/2 - 1} e^{-v/2}}{2^{k/2} \Gamma(k/2)}, \text{ for } v > 0$$
+
+\textbf{Cochran's Theorem}
+
+For $X_1,\dots, X_n \sim  N(\mu, \sigma^2)$, then $\overline{X_n} {\perp \!\!\! \perp} S_n, \: \forall n$, where $S_n$ is the sample variance. 
+Furthermore, $\frac{n S_n}{\sigma^2} \sim \chi^{2}_{n-1}$. We often prefer the unbiased variance estimator $\tilde{S_n} = \frac{n S_n}{n-1}$.
+
+\subsubsection{Student-T Distribution}
+
+The Student-T distribution with $d$ degrees of freedom, denoted $t_d$, is the law of r.v.'s that follow 
+
+$$\frac{Z}{\sqrt{V/d}},$$ where $Z \sim N(0, 1), \: V \sim \chi^{2}_{d}$ and $Z {\perp \!\!\! \perp} V$.\\
+
+From the student-T distribution, we derive the \textbf{t-Test}. Specially \underline{usefull when the sample sizes are small} and one can not make use of the 
+large numbers theorems (CTL, Slutsky's, etc.).\\
+
+Let $X_1,\dots, X_n \sim  N(\mu, \sigma^2)$, with unknown parameters. We want to test $H_0: \mu = 0 \text{ vs. } H_1: \mu \ne 0$. Our test statistic is :
+
+$$T_n = \frac{\overline{X_n} - \mu}{\sqrt{\tilde{S_n}/n}} = \sqrt{n} \frac{\overline{X_n}/\sigma}{\sqrt{\tilde{S_n}/\sigma^2}} \sim \frac{N(0, 1)}{\chi^{2}_n-1 / (n-1)}$$
+
+Since the numerator of the equation above $\sim N(0, 1)$, under $H_0$, and the denominator $\sim \chi^{2}_n-1 / (n-1)$ they are independent by Cochran's theorem.
+So finally we have a Student-T distribution $T_n \sim t_{n-1}$, and the test with \underline{non-asymptotic} level $\alpha$ is 
+$\phi = \mathbbm{1}(|T_n| > q_{\alpha/2})$ where $q_{\alpha/2}$ is the $\alpha/2$ quantile of $t_{n-1}$.
+
+
 \end{multicols}
 \end{document}
-
