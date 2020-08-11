@@ -312,7 +312,7 @@ Assuming that $\widehat{\theta}$ is asymptotically Normal we have :
 $$W = \frac{(\widehat{\theta} - \theta_0)}{\widehat{se}}, \text{ where } \widehat{se} = \sqrt{\sigma^{2}_{0}/n}$$
 
 The size $\alpha$ Wald test will reject $H_0$ when $|W| > z_{\alpha/2}$.\\
-\textit{Note: in the case of a two samples test (e.g.: comparing two means), $\widehat{se} = \sqrt{(sigma^{2}_{1}/n) + (sigma^{2}_{2}/m)}$, where m and n are the sample sizes.}
+\textit{Note: in the case of a two samples test (e.g.: comparing two means), $\widehat{se} = \sqrt{(\sigma^{2}_{1}/n) + (\sigma^{2}_{2}/m)}$, where m and n are the sample sizes.}
 
 \subsubsection{p--values}
 
@@ -351,8 +351,100 @@ $$T_n = \frac{\overline{X_n} - \mu}{\sqrt{\tilde{S_n}/n}} = \sqrt{n} \frac{\over
 
 Since the numerator of the equation above $\sim N(0, 1)$, under $H_0$, and the denominator $\sim \chi^{2}_n-1 / (n-1)$ they are independent by Cochran's theorem.
 So finally we have a Student-T distribution $T_n \sim t_{n-1}$, and the test with \underline{non-asymptotic} level $\alpha$ is 
-$\phi = \mathbbm{1}(|T_n| > q_{\alpha/2})$ where $q_{\alpha/2}$ is the $\alpha/2$ quantile of $t_{n-1}$.
+$\phi = \mathbbm{1}(|T_n| > q_{\alpha/2})$ where $q_{\alpha/2}$ is the $\alpha/2$ quantile of $t_{n-1}$.\\
+In the case of a two samples T-test Tn has the following form: 
 
+$$T_n = \frac{\overline{X_n} - \overline{Y_m} - (\mu_x - \mu_y)}{\sqrt{(\sigma^{2}_{x}/n) + (\sigma^{2}_{y}/m)}} \sim t_N$$
+where $N$ is given by the Welch-Satterthwaite formula :
+
+$$N = \frac{(\sigma^{2}_{x}/n + \sigma^{2}_{y}/m)^2}{\frac{\sigma_{x}^{4}}{n^2(n-1)} + \frac{\sigma_{y}^{4}}{m^2(m-1)}} \geq min(n, m)$$
+
+Some advantages and drawbacks of the T-test are:
+\begin{itemize}[itemsep=0em]
+    \item Non asymptotic
+    \item Can be run on small samples sizes
+    \item Can also be run on large sample sizes
+    \item Assumes the data is Gaussian
+\end{itemize}
+
+\subsubsection{MLE based test}
+
+Let $\widehat{\theta}^{MLE}$ be the MLE of $\theta$ and assume that it's technical conditions are satisfied. From the Wald's test we have under $H_0$ :
+
+$$\sqrt{n}\: I(\theta)^{1/2} (\widehat{\theta}^{MLE} - \theta_0) \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} N_d(0, I_d)$$
+
+The goal of the test is to mesure the Eucledian distance between two vectors, we end up with : 
+
+$$T_n = n\: (\widehat{\theta}^{MLE} - \theta_0)^T \: I(\widehat{\theta}^{MLE}) \: (\widehat{\theta}^{MLE} - \theta_0) \rightarrow \chi^{2}_{d}$$
+
+\textit{Note: The Wald's test is still valid if the test is one sided, however it's less powerfull.}
+
+\subsubsection{Log-Likelihood Test}
+
+The likelihood test is usefull for testing vector-valued parameters. Consider testing $H_0: \theta \in \Theta_0 \text{ versus } H_1: \theta \not\in \Theta_0$.
+The test  statistic is :
+
+$$T_n = 2(l_n(\widehat{\theta_n}) - l_n(\widehat{\theta_0})) \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} \chi^{2}_{r - q}$$
+
+Here $\theta$ is of the form $(\theta_1, \dots, \theta_q, \theta_{q+1}, \dots, \theta_r)$ and the parameter space 
+$\Theta_0 = \{ \theta: (\theta_{q+1}, \dots, \theta_r) = (\theta_{q+1}^{(0)}, \dots, \theta_r^{(0)})\}$. Both $\widehat{\theta}$'s are MLE's, but $\widehat{\theta_0}$
+is constrained to the parameter space $\Theta_0$. In english, we're testing whether a subset of the parameter vector $\theta$ equals the vector $\Theta_0$. 
+For example, testing whether $\theta_4=\theta_5=0 \text{ in } \theta = (\theta_1, \dots, \theta_{5})$.
+
+\subsection{Goodness of Fit Tests}
+
+GOF's tests are used to check if the data come from an assumed parametric model.  For example if the data is Gaussian, uniform or comes from a multinomial distribution.\\
+
+\subsubsection{Chi-Squared Test - Discrete distributions}
+
+The multinomial likelihood is $L_n(X_1, \dots, X_n; \vec{p}) = p_{1}^{N_1}p_{2}^{N_2} \dots p_{k}^{N_k}$, where $N_k$ is the number of times that $x = X_i$. 
+The MLE is $\widehat{p}_j = N_j / n$ and $\sqrt{n}(\widehat{\vec{p}} - \vec{p_0})$ is asymptotically normal under $H_0$. Therefore the following theorem holds true :
+
+$$T_n = n \sum^{K}_{j=1} \frac{(\widehat{p}_j - p_{j}^{0})^2}{p_{j}^{0}} \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} \chi^{2}_{K-1}$$
+
+\textit{Note: this test \underline{does not} work for continuous distribution. For example, to test a normal distribution we would need to "bin" our data and test
+the probability of falling under on of the bins. To fully analyse continuous distributions we need the \underline{CDF and the Empirical CDF}.}\\
+
+\subsubsection{Empirical CDF}
+
+Let $X_1,\dots, X_n$ be real r.v., the CDF is defined as $F(t) = \mathbb{P}[X_i \leq t]\: \forall t \in \mathbb{R}$. Now the empirical CDF (a.k.a sample CDF) is defined as :
+
+$$F_n(t) = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1}(X_i \leq t) \: \forall t \in \mathbb{R}$$
+
+By the strong law of large numbers $F_n(t) \overset{a.s.}{\underset{n\rightarrow \infty}{\rightarrow}} F(t)$, but this is only a \underline{pointwise} convergence.
+To have a \emph{uniform convergence} of the function we need the Glivenko-Canteli theorem (also known as the fundamental theorem of statistics), defined as :
+
+$$\lim_{n \rightarrow \infty} \underset{t\in \mathbb{R}}{sup} \: |F_n(t) - F(t)| \overset{a.s.}{\underset{n\rightarrow \infty}{\rightarrow}} 0$$
+
+By the CTL, $\sqrt{n} (F_n(t) - F(t)) \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} N(0, \sigma^2)$ and since the empirical CDF is a indicator functio,
+it's asymptotic variance is $F_n(t)(1-F_n(t))$. Once again, the goal is to mesure the distance between two functions.
+
+\subsubsection{Kolmogorov-Smirnov Test}
+
+Considering $H_0: F = F_0 \text{ v.s } H_1: F \neq F_0$, the KS test is defined as :
+
+$$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - F(t)_0| \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} \underset{0 \leq t \leq 1}{sup} |\mathbb{B}(t)|$$
+where $\mathbb{B}(t)$ is a Brownian bridge distribution (Donker's Theorem), which is a pivotal distribution and it's quantiles can be obtained in tables. The Ks test with asymptotic level $\alpha$
+is $\delta^{KS}_{\alpha} = \mathbbm{1}(T_n > q_\alpha)$, where $q_\alpha$ is the (1-$\alpha$) of sup $|\mathbb{B}(t)|$.\\
+
+In real life, we compute $T_n$ as follows :
+
+\begin{enumerate}[itemsep=0em]
+    \item $F_0$ is non-decreasing function, $F_n$ is piecewise constant, with jumps at $ t_i = X_i, \: i=1, \dots, n$.
+    \item Let $X$ be the \emph{reordered} sample.
+    \item The expression for $T_n$ reduces to the following pratical formula: 
+    $$\sqrt{n} \underset{i=1,\dots, n}{max} \left\{ max \left( \left| \frac{i -1}{n} - F_0(X_i) \right|, \left| \frac{i}{n} - F_0(X_i) \right| \right) \right\}$$
+    \item Under $H_0, \: T_n$ is a \emph{pivotal statistic} and does not depend on the distribution of the $X_i$'s but it depends on $n$. 
+    It is easy to reproduce in simulations and find the values in KS tables.
+\end{enumerate}
+
+Other GOFs test exist such as the Cramer-Von Mises ($L_2$ distance) and the Anderson-Darling tests.
+
+\subsubsection{Kolmogorov-Lillofors Test}
+
+Now, if we want to check if our data is Gaussin and we use a plug-in estimators for $\mu \text{ and } \sigma^2$ in the KS test, Donker's theorem \emph{is no longer valid}. 
+Instead, we compute que quantiles for the test statistic: $$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - \Phi_{\widehat{\mu}, \widehat{\sigma^2}}(t)|$$
+This test statistic does not depend on the unknown parameters.
 
 \end{multicols}
 \end{document}
