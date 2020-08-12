@@ -1,4 +1,4 @@
-\documentclass[9pt,landscape]{article}
+\documentclass[landscape]{article}
 \usepackage{amssymb,amsmath,amsthm,amsfonts}
 \usepackage{multicol,multirow}
 \usepackage{calc}
@@ -444,7 +444,86 @@ Other GOFs test exist such as the Cramer-Von Mises ($L_2$ distance) and the Ande
 
 Now, if we want to check if our data is Gaussin and we use a plug-in estimators for $\mu \text{ and } \sigma^2$ in the KS test, Donker's theorem \emph{is no longer valid}. 
 Instead, we compute que quantiles for the test statistic: $$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - \Phi_{\widehat{\mu}, \widehat{\sigma^2}}(t)|$$
-This test statistic does not depend on the unknown parameters.
+This test statistic does not depend on the unknown parameters and it's quantiles can be obtained in K-L tables for different values of $n$.
+
+\section{Unit 5}
+\subsection{Bayesian Inference}
+
+In the Bayesian approach we use our belief or prior knowlage of what the parameter vector $\theta$ might be. Here's how it is carried out :
+
+\begin{enumerate}[itemsep=0em]
+    \item We choose a \emph{prior distribution} that expresses our beliefs about $\theta$ before seeing the data.
+    \item We define the a statistical model, $f(x|\theta)$ that reflects our data given our parameter.
+    \item After observing the data we update our belief and calculate a \emph{posterior distribution} $f(\theta| X_1, \dots, X_n)$.
+\end{enumerate}
+
+\subsubsection{Bayes' Method}
+
+From Bayes' Theorem we can compute the prior distribution as follows :
+
+$$\pi(\theta | X^n) = \frac{\mathcal{L}(X^n|\theta) \pi(\theta)}{f(X^n)} \propto \mathcal{L}(X^n|\theta) \pi(\theta)$$
+
+In the formula above, $f(X^n)$ is a \emph{normalizing constant} and it can be removed from the equation since it does not depend on $\theta$.
+The posterior is the said to be \emph{proportional} to the likelihood times (or weigthed by) the prior. Since the posterior distribution has to 
+integrate to 1 on it's sample space, we can always recover the constant later if needed.
+
+\subsubsection{Bayes' Interval Estimate}
+
+One can estimate a Bayesian interval by finding $a$ and $b$ such that 
+$\int_{-\infty}^{a} f(\theta|x^n)d\theta = \int^{\infty}_{b} f(\theta|x^n)d\theta = \alpha / 2$. Let $C = (a, b)$, then :
+
+$$\mathbb{P}(\theta \in C|x^n) \int_{b}^{a} f(\theta|x^n)d\theta = 1 - \alpha$$
+
+so $C$ is a $1 - \alpha$ \emph{posterior interval}.
+
+\subsubsection{Improper Priors \& "Noninformative" Priors}
+
+If we have no information about the parameter, how to pick a prior ? A good candidate is the \emph{constant prior}, for example $\pi(\theta) \propto 1$.
+If the parameter space $\Theta$ is bounded ([0, 1]), then this is juste the \emph{uniform prior} on $\Theta$. However, if $\Theta$ is not bounded, then this is not a 
+proper prior since it doesn't integrate to 1. We define an \emph{improper prior} as a mesurable, nonnegative function $\pi(.)$ defined on $\Theta$ that is not
+integrable. However we can still define a posterior with an improper prior.
+
+\subsubsection{Conjugate Priors}
+
+When the posterior distribution  belongs to the same distribution family as the prior distribution, the prior is called a \emph{conjugate prior} to the likelihood model.
+Here're some common conjugate priors: and models :
+
+\begin{tabular}{l l c}
+    \textit{Prior} & \textit{Model} & \textit{Posterior Parameters}\\
+    Beta    & Bernoulli     & $(\alpha + \sum x_i, \beta + n - \sum x_i)$\\
+    Beta    & Binomial      & $(\alpha + \sum x_i, \beta + N_i - \sum x_i)$\\
+    Beta    & Geometric     & $(\alpha + n, \beta + \sum x_i)$\\
+    Gamma   & Poisson       & $(\alpha + \sum x_i, \beta + n)$\\
+    Gamma   & Exponential   & $(\alpha + n, \beta + \sum x_i)$\\
+    Normal  & Normal        & See Wikipedia table.
+\end{tabular}
+
+\subsubsection{Jeffreys' Prior}
+
+Jeffrey created a rule to choose priors and that is as follows : 
+
+$$\pi_{J}(\theta) \propto \sqrt{det(I(\theta)}$$
+
+Since a \emph{higher} Fisher Information is associated with an \emph{easier point to estimate} (less randomness in the data) than one with lower Fisher Information,
+we're trying to balance that by using it as a prior in the Bayes approach. The effect is that we're putting more weight to the points that are easier to estimate.\\
+The Jeffreys' prior satisfies a \emph{representation invariance principal}.If $\eta = \phi(\theta)$ in an invertible function then the PDF 
+$\tilde{\pi}(.) \text{ of } \eta \text{ satisfies } \pi(\eta) \propto \sqrt{\tilde{I}(\eta)}$. We can write $\tilde{\pi}(\eta)$ in term of $\phi^{'}(.) \text{ and } \phi^{-1}(.)$:
+
+$$\tilde{\pi}(\eta) = \frac{\pi(\phi^{-1}(\eta))}{|\phi^{'}(\phi^{-1}(\eta))|}$$
+
+Some applications of this property would be :
+
+\begin{itemize}
+    \item Compute the prior for a $Ber(q^{10})$ instead of $Ber(p)$
+    \item Compute the prior for $Exp (1 / \lambda)$ instead of $Exp(\lambda)$
+\end{itemize}
+
+\subsubsection{Bayesian Estimation}
+
+The Bayes approach can also be used to estimate the true underlined parameter, however in a frequentist manner. One would start bu calculating the posterior, 
+nd then the posterior \emph{mean, meadian or mode} can be used as estimator. Another popular choice is to use the Maximum A Posteriori (MAP) estimator.
+
+$$\widehat{\theta}^{MAP} = \underset{\theta \in \Theta}{argmax} \: \pi(\theta | X_1, \dots, X_n)$$
 
 \end{multicols}
 \end{document}
