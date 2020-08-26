@@ -529,6 +529,7 @@ $$\widehat{\theta}^{MAP} = \underset{\theta \in \Theta}{argmax} \: \pi(\theta | 
 \subsection{Linear Regression}
 
 Regression is a method for studying the relationship between a \emph{response} variable $Y$ and a \emph{covariate} variable $X$ (often called a feature is the ML world).
+One important fact about regression is that it exhibits \emph{correlations}, \textbf{not} \emph{casuality}. 
 Here we summarize this relationship via the \emph{regression function}:
 
 $$\mu(x) = \mathbb{E}[Y | X = x] = \int y f(y|x) dy$$
@@ -561,8 +562,10 @@ $$\widehat{\beta}_1 = \frac{\overline{XY} - \overline{X} \overline{Y}}{\overline
 $$\widehat{\beta}_0 = \overline{Y_n} - \widehat{\beta}_1 \overline{X_n}$$
 
 When we add the assumption that $\epsilon \sim N(0, \sigma^2)$ given $X,\: Y_i|X_i \sim N(\mu_i, \sigma^2)$. 
-Under assumption of \emph{Normality}, the LSE is the same as the MLE where $\widehat{\sigma^2} = \frac{1}{n - 2} \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$
+Under assumption of \emph{Normality}, the LSE is the same as the MLE where $\widehat{\sigma^2} = \frac{1}{n - p} \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$
 is an unbiased estimator of the $\sigma^2$.
+
+\emph{Note: one can use Goodness of Fit to test whether the residuals are Gaussian}.
 
 \subsubsection{Multivariate Regression and Matrix form}
 
@@ -573,9 +576,41 @@ $$\mathbf{Y}_i = \mathbb{X}_i^T \mathbf{\beta} + \mathbf{\epsilon_i}, \text{ and
 $$\widehat{\mathbf{\beta}} = \underset{\mathbf{\beta} \in \mathbb{R}^{p}}{argmax} ||\mathbf{Y} - \mathbb{X}^T \mathbf{\beta}||^2_2$$
 
 Assuming that $rank(\mathbb{X}) = p$, which means that $\mathbb{X}$ is invertable, we have a closed form solution for the LSE as 
-$\widehat{\mathbf{\beta}} = (\mathbb{X}^T \mathbb{X})^{-1} \mathbb{X}^T \mathbf{Y}$.
+$\widehat{\mathbf{\beta}} = (\mathbb{X}^T \mathbb{X})^{-1} \mathbb{X}^T \mathbf{Y}$. 
+
+The \emph{geometric} interpretation of the LSE: $\mathbb{X} \mathbf{\beta}$ is the  orthogonal projection of $\mathbf{Y}$ onto the subspace
+spanned by the columns of $\mathbb{X}$.
 
 
+\subsubsection{LSE Inference and Testing}
+However, to make further inference we need to make additional assumptions:
+
+\begin{itemize}[itemsep=0em]
+    \item The design matrix $\mathbb{X}$ is \textbf{deterministic} and invertible
+    \item The model is \emph{homoscedastic}: $\varepsilon_i$ are i.i.d
+    \item The noise vector is Gaussian $N(0, \sigma^2)$, which leads to $Y_i | X_i \sim N(\mathbb{X}\mathbf(\beta)^*, \sigma^2 I_p)$
+\end{itemize}
+
+\emph{Note : if $\mathbb{X}$ is not deterministic, all the above can be understood \textbf{conditionally} on $\mathbb{X}$}.
+
+Theses assumptions give rise to the following properties:
+
+\begin{itemize}[itemsep=0em]
+    \item LSE = MLE
+    \item $\widehat{\mathbf{\beta}} \sim N(\mathbf{\beta}^*, \sigma^2 (\mathbb{X}^T \mathbb{X})^{-1})$
+    \item Quadratic risk of $\widehat{\mathbf{\beta}}$ is $\sigma^2 \, tr((\mathbb{X}^T \mathbb{X})^{-1})$
+    \item The prediction error is $\sigma^2 (n - p)$
+\end{itemize}
+
+By Cochran's theorem, $\mathbf{\widehat{\beta}} {\perp \!\!\! \perp} \widehat{\sigma}^2$, therefore we can use a modified T-test to test the significancy of the 
+j-th explanatory variable in the linear regression. For example, let $H_0: \beta_j = 0 \text{ vs } H_1: \beta_j \ne 0$.
+
+$$ T_{n}^{(j)} = \left| \frac{\widehat{\beta}_j - \beta_j}{\sqrt{\sigma^2 \gamma_j}} \right| \sim t_{n-p}$$
+
+where $\gamma_j$ is the j-th \emph{diagonal} element is the $(\mathbb{X}^T \mathbb{X})^{-1}$ matrix. The test with non asymptotic level $\alpha$ is 
+$\psi_{j} = \{ T_n^{(j)} > q_{\alpha/2}(t_{n-p}) \}$. In the case where we're testing multiple explanatory variable et use the \textbf{Bonferroni's Test}.
+Let $H_0: \mathbf{\beta}_j = 0 \text{ vs } H_1: \mathbf{\beta}_j \ne 0, \: (\forall j \in S)$, where $S \subseteq \{1, \dots, p\}$. To have non asymptotic level $\alpha$
+one has to use $\alpha / k$, where $k = |S|$ (number of tests).
 
 \end{multicols}
 \end{document}
