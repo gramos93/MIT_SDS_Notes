@@ -351,7 +351,7 @@ $$T_n = \frac{\overline{X_n} - \mu}{\sqrt{\tilde{S_n}/n}} = \sqrt{n} \frac{\over
 
 Since the numerator of the equation above $\sim N(0, 1)$, under $H_0$, and the denominator $\sim \chi^{2}_n-1 / (n-1)$ they are independent by Cochran's theorem.
 So finally we have a Student-T distribution $T_n \sim t_{n-1}$, and the test with \underline{non-asymptotic} level $\alpha$ is 
-$\phi = \mathbbm{1}(|T_n| > q_{\alpha/2})$ where $q_{\alpha/2}$ is the $\alpha/2$ quantile of $t_{n-1}$.\\
+$\psi = \mathbbm{1}(|T_n| > q_{\alpha/2})$ where $q_{\alpha/2}$ is the $\alpha/2$ quantile of $t_{n-1}$.\\
 In the case of a two samples T-test Tn has the following form: 
 
 $$T_n = \frac{\overline{X_n} - \overline{Y_m} - (\mu_x - \mu_y)}{\sqrt{(\sigma^{2}_{x}/n) + (\sigma^{2}_{y}/m)}} \sim t_N$$
@@ -443,7 +443,7 @@ Other GOFs test exist such as the Cramer-Von Mises ($L_2$ distance) and the Ande
 \subsubsection{Kolmogorov-Lillofors Test}
 
 Now, if we want to check if our data is Gaussin and we use a plug-in estimators for $\mu \text{ and } \sigma^2$ in the KS test, Donker's theorem \emph{is no longer valid}. 
-Instead, we compute que quantiles for the test statistic: $$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - \Phi_{\widehat{\mu}, \widehat{\sigma^2}}(t)|$$
+Instead, we compute que quantiles for the test statistic: $$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - \psi_{\widehat{\mu}, \widehat{\sigma^2}}(t)|$$
 This test statistic does not depend on the unknown parameters and it's quantiles can be obtained in K-L tables for different values of $n$.
 
 \section{Unit 5}
@@ -506,7 +506,7 @@ $$\pi_{J}(\theta) \propto \sqrt{det(I(\theta)}$$
 
 Since a \emph{higher} Fisher Information is associated with an \emph{easier point to estimate} (less randomness in the data) than one with lower Fisher Information,
 we're trying to balance that by using it as a prior in the Bayes approach. The effect is that we're putting more weight to the points that are easier to estimate.\\
-The Jeffreys' prior satisfies a \emph{representation invariance principal}.If $\eta = \phi(\theta)$ in an invertible function then the PDF 
+The Jeffreys' prior satisfies a \emph{representation invariance principal}.If $\eta = \psi(\theta)$ in an invertible function then the PDF 
 $\tilde{\pi}(.) \text{ of } \eta \text{ satisfies } \pi(\eta) \propto \sqrt{\tilde{I}(\eta)}$. We can write $\tilde{\pi}(\eta)$ in term of $\phi^{'}(.) \text{ and } \phi^{-1}(.)$:
 
 $$\tilde{\pi}(\eta) = \frac{\pi(\phi^{-1}(\eta))}{|\phi^{'}(\phi^{-1}(\eta))|}$$
@@ -524,6 +524,58 @@ The Bayes approach can also be used to estimate the true underlined parameter, h
 nd then the posterior \emph{mean, meadian or mode} can be used as estimator. Another popular choice is to use the Maximum A Posteriori (MAP) estimator.
 
 $$\widehat{\theta}^{MAP} = \underset{\theta \in \Theta}{argmax} \: \pi(\theta | X_1, \dots, X_n)$$
+
+\section{Unit 6 - Regression}
+\subsection{Linear Regression}
+
+Regression is a method for studying the relationship between a \emph{response} variable $Y$ and a \emph{covariate} variable $X$ (often called a feature is the ML world).
+Here we summarize this relationship via the \emph{regression function}:
+
+$$\mu(x) = \mathbb{E}[Y | X = x] = \int y f(y|x) dy$$
+
+The goal is to estimate the regression function from the data of the form $(X_1, Y_1), \dots, (X_i, Y_i) \sim F_{Y,X}$. 
+When we assume $\mu(x)$ is linear this is called \emph{linear regression} and it's simplest form is $\mu(x) = \beta_0 + \beta_1 x$.
+To estimate the regression function we need some modeling assumptions:
+
+\begin{itemize}[itemsep=0em]
+    \item $(X_i, Y_i)$ are i.i.d from some unknown joint distribution;
+    \item $var(X) > 0$ and $var(Y | X = x) > 0$;
+    \item This distribution is best described by $h(y|x) = \frac{h(x, y)}{h(x)}$.\\
+          It contains all the information of $Y$ given $X$.
+\end{itemize}
+
+From above it's clear that if $var(Y | X = x) > 0$, the points do not follow a perfect line. Therefore we introduce a \emph{noise} ($\epsilon$) term to the 
+theorical linear regression function, which gives $Y = a^* + b^* x + \epsilon$. 
+
+\subsection{Least Squares Estimator(LSE)}
+
+The LSE are the values of $\widehat{\beta}_0$ and $\widehat{\beta}_1$ that minimizes the \emph{residual sums of squares} or $RSS = \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$.
+Where the residuals, $\widehat{\epsilon}_i$ are the vertical distance between the regression function and the $Y_i$'s. We can also use the following form:
+
+$$\sum_{i = 1}^{n} (Y_i - \widehat{\beta}_0 - \widehat{\beta}_1 X_i)^2$$
+
+The LSE's are given by:
+
+$$\widehat{\beta}_1 = \frac{\overline{XY} - \overline{X} \overline{Y}}{\overline{X^2} - \overline{X}^2}$$
+
+$$\widehat{\beta}_0 = \overline{Y_n} - \widehat{\beta}_1 \overline{X_n}$$
+
+When we add the assumption that $\epsilon \sim N(0, \sigma^2)$ given $X,\: Y_i|X_i \sim N(\mu_i, \sigma^2)$. 
+Under assumption of \emph{Normality}, the LSE is the same as the MLE where $\widehat{\sigma^2} = \frac{1}{n - 2} \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$
+is an unbiased estimator of the $\sigma^2$.
+
+\subsubsection{Multivariate Regression and Matrix form}
+
+The covariates may come in a vector form and we'll en up with a $\mathbb{X}_{(n \times p)}$ \emph{design matrix} of covariates samples. 
+The regression function still works in a multi dimentional space and is of the form:
+
+$$\mathbf{Y}_i = \mathbb{X}_i^T \mathbf{\beta} + \mathbf{\epsilon_i}, \text{ and satisfies }$$
+$$\widehat{\mathbf{\beta}} = \underset{\mathbf{\beta} \in \mathbb{R}^{p}}{argmax} ||\mathbf{Y} - \mathbb{X}^T \mathbf{\beta}||^2_2$$
+
+Assuming that $rank(\mathbb{X}) = p$, which means that $\mathbb{X}$ is invertable, we have a closed form solution for the LSE as 
+$\widehat{\mathbf{\beta}} = (\mathbb{X}^T \mathbb{X})^{-1} \mathbb{X}^T \mathbf{Y}$.
+
+
 
 \end{multicols}
 \end{document}
