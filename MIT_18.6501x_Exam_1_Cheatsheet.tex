@@ -424,7 +424,8 @@ it's asymptotic variance is $F_n(t)(1-F_n(t))$. Once again, the goal is to mesur
 Considering $H_0: F = F_0 \text{ v.s } H_1: F \neq F_0$, the KS test is defined as :
 
 $$T_n = \underset{t\in \mathbb{R}}{sup} \: \sqrt{n}|F_n(t) - F(t)_0| \overset{(d)}{\underset{n\rightarrow \infty}{\rightarrow}} \underset{0 \leq t \leq 1}{sup} |\mathbb{B}(t)|$$
-where $\mathbb{B}(t)$ is a Brownian bridge distribution (Donker's Theorem), which is a pivotal distribution and it's quantiles can be obtained in tables. The Ks test with asymptotic level $\alpha$
+where $\mathbb{B}(t)$ is a Brownian bridge distribution (Donker's Theorem), which is a pivotal distribution and it's quantiles can be obtained in tables. 
+The Ks test with asymptotic level $\alpha$
 is $\delta^{KS}_{\alpha} = \mathbbm{1}(T_n > q_\alpha)$, where $q_\alpha$ is the (1-$\alpha$) of sup $|\mathbb{B}(t)|$.\\
 
 In real life, we compute $T_n$ as follows :
@@ -507,7 +508,8 @@ $$\pi_{J}(\theta) \propto \sqrt{det(I(\theta)}$$
 Since a \emph{higher} Fisher Information is associated with an \emph{easier point to estimate} (less randomness in the data) than one with lower Fisher Information,
 we're trying to balance that by using it as a prior in the Bayes approach. The effect is that we're putting more weight to the points that are easier to estimate.\\
 The Jeffreys' prior satisfies a \emph{representation invariance principal}.If $\eta = \psi(\theta)$ in an invertible function then the PDF 
-$\tilde{\pi}(.) \text{ of } \eta \text{ satisfies } \pi(\eta) \propto \sqrt{\tilde{I}(\eta)}$. We can write $\tilde{\pi}(\eta)$ in term of $\phi^{'}(.) \text{ and } \phi^{-1}(.)$:
+$\tilde{\pi}(.) \text{ of } \eta \text{ satisfies } \pi(\eta) \propto \sqrt{\tilde{I}(\eta)}$. We can write $\tilde{\pi}(\eta)$ in term of 
+$\phi^{'}(.) \text{ and } \phi^{-1}(.)$:
 
 $$\tilde{\pi}(\eta) = \frac{\pi(\phi^{-1}(\eta))}{|\phi^{'}(\phi^{-1}(\eta))|}$$
 
@@ -550,7 +552,8 @@ theorical linear regression function, which gives $Y = a^* + b^* x + \epsilon$.
 
 \subsection{Least Squares Estimator(LSE)}
 
-The LSE are the values of $\widehat{\beta}_0$ and $\widehat{\beta}_1$ that minimizes the \emph{residual sums of squares} or $RSS = \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$.
+The LSE are the values of $\widehat{\beta}_0$ and $\widehat{\beta}_1$ that minimizes the \emph{residual sums of squares} or 
+$RSS = \sum_{i = 1}^{n} \widehat{\epsilon}_i^2$.
 Where the residuals, $\widehat{\epsilon}_i$ are the vertical distance between the regression function and the $Y_i$'s. We can also use the following form:
 
 $$\sum_{i = 1}^{n} (Y_i - \widehat{\beta}_0 - \widehat{\beta}_1 X_i)^2$$
@@ -602,15 +605,105 @@ Theses assumptions give rise to the following properties:
     \item The prediction error is $\sigma^2 (n - p)$
 \end{itemize}
 
-By Cochran's theorem, $\mathbf{\widehat{\beta}} {\perp \!\!\! \perp} \widehat{\sigma}^2$, therefore we can use a modified T-test to test the significancy of the 
+By Cochran's theorem, $\mathbf{\widehat{\beta}} {\perp \!\!\! \perp} \widehat{\sigma}^2$, therefore we can use a modified 
+T-test to test the significancy of the 
 j-th explanatory variable in the linear regression. For example, let $H_0: \beta_j = 0 \text{ vs } H_1: \beta_j \ne 0$.
 
 $$ T_{n}^{(j)} = \left| \frac{\widehat{\beta}_j - \beta_j}{\sqrt{\sigma^2 \gamma_j}} \right| \sim t_{n-p}$$
 
 where $\gamma_j$ is the j-th \emph{diagonal} element is the $(\mathbb{X}^T \mathbb{X})^{-1}$ matrix. The test with non asymptotic level $\alpha$ is 
 $\psi_{j} = \{ T_n^{(j)} > q_{\alpha/2}(t_{n-p}) \}$. In the case where we're testing multiple explanatory variable et use the \textbf{Bonferroni's Test}.
-Let $H_0: \mathbf{\beta}_j = 0 \text{ vs } H_1: \mathbf{\beta}_j \ne 0, \: (\forall j \in S)$, where $S \subseteq \{1, \dots, p\}$. To have non asymptotic level $\alpha$
+Let $H_0: \mathbf{\beta}_j = 0 \text{ vs } H_1: \mathbf{\beta}_j \ne 0, \: (\forall j \in S)$, where $S \subseteq \{1, \dots, p\}$. 
+To have non asymptotic level $\alpha$
 one has to use $\alpha / k$, where $k = |S|$ (number of tests).
+
+\section{Unit 7 - GLMs}
+
+From the model presented above, we're going to relax two components in order to generalize the model. The first componenet is the random variable $Y$.
+The second is the regression function itself. The first example of GLM is where the $Y \in {0, 1}$, in other words, Bernoulli. Therefore we can not 
+represent the relationship of $X$ to $Y$ from a line in $\mathbb{R}$, we need an \emph{invertible} regression function that span from 0 to 1.
+The generalization can be summarized as follows:
+
+\begin{itemize}[itemsep=0em]
+    \item Random component: $Y|X = x \sim (Ber, Exp, Poisson, etc)$
+    \item Regression Function: $g(\mu(x)) = x^T \beta$, where $g$ is called the \emph{link function}
+          and $\mu(x)$ is the regression function.
+\end{itemize}
+
+\subsection{Exponential Family}
+
+Since GLMs will mostly make use of exponential-like distribution, we introduce a general way of expressing theses distributions.
+
+$$f_\theta(y) = exp\left[\sum^{h}_{i=1} \eta_i(\theta) T_i(y) - B(\theta) \right] h(y)$$
+
+A distribution is said to be a \emph{k-parameter} exponential on $\mathbb{R}^q$ if there exist real valued functions $\eta_1, \eta_2, \dots$ and  $B$ of $\theta$,
+$T_1, T_2, ..., T_k$ and $h$ of $y \in \mathbb{R}^q$ such that the PDF can be wrtitten as above.
+
+\begin{tabular}{l c}
+    \textit{Distribution} &\textit{Exponential Form}\\
+    Bernoulli & $exp\left[y log(\theta / (1 - \theta)) - (-log(1 - \theta)) \right]$\\
+    Poisson & $(1/y!) \: exp\left[-\theta + y log(\theta) \right]$\\
+    Gaussian & $1/\sqrt{2 \pi \sigma^2} \: exp\left[y \mu/\sigma^2 - 1/2\sigma^2 - \mu^2/2\sigma^2\right]$
+\end{tabular}
+
+\subsubsection{Canonical Exponential Family}
+
+A exponential distribution can be called canonical if it has only one parameter, $k = 1$ and the \emph{dispersion parameter} $\phi$ is known (see bellow).
+In the case that $\phi$ is unknown, the distribution may or may not be canonical. This is the case of the Normal distribution, if $\sigma^2 \text{ or }\mu$ are 
+known, than we only have on parameter and the distribution is canocical, if both are unknown, the distribution is not.
+The canocical form is :
+
+$$f_theta(y) = exp\left[\frac{y \theta - b(\theta)}{\phi} - c(y, \phi) \right]$$
+$$\mathbb{E}[Y] = b'(\theta) \: \text{and} \: var(Y) = b"(\theta) \phi$$
+
+Exponential Family table
+
+\begin{tabular}{l l l l}
+    \textit{Param.} &\textit{Normal} & \textit{Poisson} & \textit{Bernoulli}\\
+    $y \in$ & $(-\infty, \infty)$ & $[0, \infty)$ & ${0, 1}$\\
+    $\phi$ & $\sigma^2$ & $1$ & $1$\\
+    $b(\theta)$ & $\theta^2 / 2$ & $e^\theta$ & $log(1 + e^\theta)$\\
+    $c(y, \phi)$ & $(-1/2) (y^2/\phi + log(2 \pi \phi))$ & $-log(y!)$ & $0$
+\end{tabular}
+
+\subsubsection{Link Function}
+
+$\beta$ is the parameter of interest, and it need to appear somehow in the likelihood function to allow us to use the MLE. The \emph{link function} $g(.)$
+will relate the linear predictor $X^T \beta$ to the mean parameter $\mu$ by the following: $\mathbb{X}^T \mathbf{\beta} = g(\mu)$, where $g$ is required
+to be \emph{monotone increasing and differentiable}. In the canonical case, the link function will link the mean $\mu$ to the canonical parameter
+$\theta$, and since $\mu = b'(\theta)$ we have $g(\mu) = b^{-1}(\mu)$. In the case where $\phi > 0$ the canonical link function is strictly increasing.\\
+
+\textbf{Bernoulli example:} $b(\theta) = log(1+e^\theta) \Rightarrow b'(\theta) = \frac{e^\theta}{1 + e^\theta} = \mu \Rightarrow \theta = log \left(\frac{\mu}{1-\mu}\right)$.
+The form of the equation above is called \emph{logit link}. Bellow are more examples of canonical forms and links:
+
+\begin{tabular}{l l l}
+    \textit{Distribution} & $b(\theta)$ & $g(\mu)$ \\
+    Bernoulli & $log(1+e^\theta)$ & $logit(\mu)$\\
+    Poisson & $e^\theta$ & $log(\mu)$ \\
+    Gaussian & $\theta^2 / 2$ & $\mu$ \\
+    Gamma & $-log(-\theta)$ & $-1 / \mu$
+\end{tabular}
+
+\subsubsection{Log-Likelihood}
+
+$$\ell_n (\mathbb{Y}, \mathbb{X}, \mathcal{\beta}) = \sum^{n}_{i=1} \frac{Y_i \theta_i - b(\theta_i)}{\phi} + const$$
+
+When the \emph{canocical link} is used, the log-likelihood has a simpler form. Furthermore, is $\phi > 0$ and $rank(\mathbb{X}) = p$, 
+the log-likelihood is \emph{strictly concave}. As a concequence, \emph{the MLE is unique}. However, if another parametrization is used,
+the log-likelihood may not be strictly concave leading to \emph{several local maxima}. In this case optimization algorithms may be used.
+
+$$\ell_n (\mathbb{Y}, \mathbb{X}, \mathcal{\beta}) = \sum^{n}_{i=1} \frac{Y_i X_i \beta - b(X_i \beta)}{\phi} + const$$
+
+\subsubsection{Models}
+
+Let $(X_i, Y_i) \in \mathbb{R}^p \times \mathbb{R}$, be independent random pairs such that the conditioal distribution of $Y_i|X_I = x_i$
+has density in the canocical exp. family. Here the means $\mu_i$ are related to the canocical parameter $\theta_i$ via $\mu_i = b'(\theta)$
+and $\mu_i$ depends linearly on the covariates through a link function $g(\mu_i) = X_i^T \beta$.\\
+\emph{Back to} $\beta$: given the link function $g$, note the following relationship between $\beta$ and $\theta$.
+
+$$\theta_i = (b')^{-1}(\mu_i) = (b')^{-1}(g^{-1}(X_I^T \beta)) \equiv h(X_I^T \beta)$$
+
+\emph{Note:} remark that if $g$ is the canonical link function, $h$ is the identity, which means that $\theta_i = X_i^T \beta$.
 
 \end{multicols}
 \end{document}
